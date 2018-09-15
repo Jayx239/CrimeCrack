@@ -1,0 +1,14 @@
+.client.canvas {
+	width: 75%;
+	margin-left: auto;
+	margin-right: auto;
+	height: 500px;
+	background-color: black;
+}
+
+.character { 
+	background-color: red; 
+	width: 5px;
+	height: 5px;
+	border-radius: 5px;
+}

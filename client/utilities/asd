@@ -1,0 +1,10 @@
+import sys
+import random
+import string
+filepath = sys.argv[0];
+file = open(filepath,"w");
+write(filepath)
+for i in range(0,2048):
+    for j in range(0,2048):
+        for z in range(0,3):
+            file.write(random.choice(string.ascii_letter))

@@ -1,0 +1,16 @@
+.client.canvas {
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	height: 100%;
+	background-color: black;
+	max-width: 1024px;
+	max-height: 1024px;
+}
+
+.character { 
+	background-color: red; 
+	width: 5px;
+	height: 5px;
+	border-radius: 5px;
+}
