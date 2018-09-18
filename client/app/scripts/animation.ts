@@ -46,10 +46,8 @@ class imageData {
         this.width = width;
         this.height = height;
 
-        for(var i = 0; i < width; i++) {
-            for(var j = 0; j < height; j++) {
-                this.content[i + (j*width)] = new pixel();
-            }
+        for(var i = 0; i < width*height; i++) {
+            this.content[i] = new pixel();
         }
     }
 
@@ -66,10 +64,10 @@ class imageData {
             }
 
             var rgbValues = value.toNumberArray();
-            data.push(rgbValues[0]);
-            data.push(rgbValues[1]);
-            data.push(rgbValues[2]);
-            data.push(rgbValues[3]);
+            data[i*4] = rgbValues[0];
+            data[(i*4) + 1] = rgbValues[1];
+            data[(i*4) + 2] = rgbValues[2];
+            data[(i*4) + 3] = rgbValues[3];
 
         }
 
@@ -164,22 +162,22 @@ class Box {
     }
 
     public generateCanvasBox() {
-        var boxWidth: number = Math.abs(this.xlCoordinate - this.xrCoordinate);
+        /*var boxWidth: number = Math.abs(this.xlCoordinate - this.xrCoordinate);
         var boxHeight: number = Math.abs(this.ytCoordinate-this.ybCoordinate);
-
+*/
         /* x axis borders */
-        var borderTopTop: number = this.ytCoordinate;
+  /*      var borderTopTop: number = this.ytCoordinate;
         var borderTopBottom: number = this.ytCoordinate + this.tBorderWidth;
         var borderBottomTop: number = this.ybCoordinate - this.bBorderWidth;
         var borderBottomBottom: number = this.ybCoordinate;
-
+*/
         /* y axis borders */
-        var borderLeftLeft: number = this.xlCoordinate;
+  /*      var borderLeftLeft: number = this.xlCoordinate;
         var borderLeftRight: number = this.xlCoordinate + this.lBorderWidth;
         var borderRightLeft: number = this.xrCoordinate - this.rBorderWidth;
         var borderRightRight: number = this.xrCoordinate;
 
-
+*/
         var imgData: imageData = new imageData();
         imgData.setSize(this.width,this.height);
 
@@ -188,13 +186,13 @@ class Box {
                 if(xPosition < this.lBorderWidth) {
                     imgData.setPixel(this.lBorderColor, xPosition, yPosition);
                 }
-                else if(xPosition > this.width-this.rBorderWidth) {
+                else if(xPosition >= (this.width-this.rBorderWidth)) {
                     imgData.setPixel(this.rBorderColor, xPosition, yPosition);
                 }
                 else if(yPosition < this.tBorderWidth) {
                     imgData.setPixel(this.tBorderColor, xPosition, yPosition);
                 }
-                else if(yPosition > this.height-this.bBorderWidth) {
+                else if(yPosition >= (this.height-this.bBorderWidth)) {
                     imgData.setPixel(this.bBorderColor, xPosition, yPosition);
                 }
                 else {

@@ -3,11 +3,21 @@
 	margin-left: auto;
 	margin-right: auto;
 	height: 100%;
-	background-color: black;
-	max-width: 1024px;
-	max-height: 1024px;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	display: block;
+	/*max-width: 1024px;
+	max-height: 1024px;*/
 }
-
+#ClientCanvas {
+	background-color: black;
+	z-index: 0;
+}
+#Overlay{
+	z-index: 1;
+	background-color: transparent;
+}
 .character { 
 	background-color: red; 
 	width: 5px;

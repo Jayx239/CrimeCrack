@@ -1,4 +1,3 @@
-"use strict";
 var BaseCanvasManager = /** @class */ (function () {
     function BaseCanvasManager(canvasId, width, height) {
         this.canvas = document.getElementById(canvasId);
@@ -16,19 +15,19 @@ var BaseCanvasManager = /** @class */ (function () {
         }
     };
     BaseCanvasManager.prototype.setCanvasString = function (bitMap, width, height, offsetX, offsetY) {
-        var size = width * height * 4;
+        var size = width * height;
         var imgData = new Uint8ClampedArray(size);
         for (var i = 0; i < size; i += 4) {
             imgData[i] = bitMap.charCodeAt(i); /* r */
             imgData[i + 1] = bitMap.charCodeAt(i + 1); /* g */
             imgData[i + 2] = bitMap.charCodeAt(i + 2); /* b */
-            imgData[i + 3] = bitMap.charCodeAt(i + 2); /* a */
+            imgData[i + 3] = bitMap.charCodeAt(i + 3); /* a */
         }
         this.ctx.putImageData(new ImageData(imgData, width, height), offsetX, offsetY);
     };
     BaseCanvasManager.prototype.setCanvasNumber = function (bitMap, width, height, offsetX, offsetY) {
-        var size = width * height * 4;
-        var imgData = new Uint8ClampedArray(size);
+        var size = width * height;
+        var imgData = new Uint8ClampedArray(size * 4);
         for (var i = 0; i < size; i += 4) {
             imgData[i] = bitMap[i]; /* r */
             imgData[i + 1] = bitMap[i + 1]; /* g */
@@ -46,9 +45,24 @@ var BaseCanvasManager = /** @class */ (function () {
             imgData[i + 2] = bitMap[i + 2]; /* b */
             imgData[i + 3] = bitMap[i + 3]; /* a */
         }
+        console.log(imgData);
+        console.log("offsetx: " + offsetX + " offsety: " + offsetY);
         this.ctx.putImageData(new ImageData(imgData, width, height), offsetX, offsetY);
     };
-    BaseCanvasManager.prototype.drawImageData = function () {
+    BaseCanvasManager.prototype.drawBox = function (box) {
+        this.setCanvasNumberArray(box.generateCanvasBox().data(), box.width, box.height, box.xlCoordinate, box.ytCoordinate);
+    };
+    BaseCanvasManager.prototype.drawImageData = function (imageData, inLeft, inTop) {
+        var left = inLeft;
+        var top = inTop;
+        if (typeof (left) === 'undefined' || left === null)
+            left = 0;
+        if (typeof (top) === 'undefined' || top === null)
+            top = 0;
+        console.log("width: " + imageData.width + " height: " + imageData.height);
+        this.setCanvasNumberArray(imageData.data(), imageData.width, imageData.height, left, top);
+    };
+    BaseCanvasManager.prototype.drawImageDataEx = function () {
         var box = new Box();
         var borderColor = new pixel();
         borderColor.set(153, 102, 255, 255);
@@ -66,4 +80,3 @@ var BaseCanvasManager = /** @class */ (function () {
     };
     return BaseCanvasManager;
 }());
-//# sourceMappingURL=canvas.js.map

@@ -1,4 +1,3 @@
-"use strict";
 var pixel = /** @class */ (function () {
     function pixel() {
         this.red = 0;
@@ -33,10 +32,8 @@ var imageData = /** @class */ (function () {
         this.content = [new pixel()];
         this.width = width;
         this.height = height;
-        for (var i = 0; i < width; i++) {
-            for (var j = 0; j < height; j++) {
-                this.content[i + (j * width)] = new pixel();
-            }
+        for (var i = 0; i < width * height; i++) {
+            this.content[i] = new pixel();
         }
     };
     imageData.prototype.setPixel = function (pixel, x, y) {
@@ -50,10 +47,10 @@ var imageData = /** @class */ (function () {
                 value = this.content[i];
             }
             var rgbValues = value.toNumberArray();
-            data.push(rgbValues[0]);
-            data.push(rgbValues[1]);
-            data.push(rgbValues[2]);
-            data.push(rgbValues[3]);
+            data[i * 4] = rgbValues[0];
+            data[(i * 4) + 1] = rgbValues[1];
+            data[(i * 4) + 2] = rgbValues[2];
+            data[(i * 4) + 3] = rgbValues[3];
         }
         return data;
     };
@@ -119,18 +116,22 @@ var Box = /** @class */ (function () {
         }
     };
     Box.prototype.generateCanvasBox = function () {
-        var boxWidth = Math.abs(this.xlCoordinate - this.xrCoordinate);
-        var boxHeight = Math.abs(this.ytCoordinate - this.ybCoordinate);
+        /*var boxWidth: number = Math.abs(this.xlCoordinate - this.xrCoordinate);
+        var boxHeight: number = Math.abs(this.ytCoordinate-this.ybCoordinate);
+*/
         /* x axis borders */
-        var borderTopTop = this.ytCoordinate;
-        var borderTopBottom = this.ytCoordinate + this.tBorderWidth;
-        var borderBottomTop = this.ybCoordinate - this.bBorderWidth;
-        var borderBottomBottom = this.ybCoordinate;
+        /*      var borderTopTop: number = this.ytCoordinate;
+              var borderTopBottom: number = this.ytCoordinate + this.tBorderWidth;
+              var borderBottomTop: number = this.ybCoordinate - this.bBorderWidth;
+              var borderBottomBottom: number = this.ybCoordinate;
+      */
         /* y axis borders */
-        var borderLeftLeft = this.xlCoordinate;
-        var borderLeftRight = this.xlCoordinate + this.lBorderWidth;
-        var borderRightLeft = this.xrCoordinate - this.rBorderWidth;
-        var borderRightRight = this.xrCoordinate;
+        /*      var borderLeftLeft: number = this.xlCoordinate;
+              var borderLeftRight: number = this.xlCoordinate + this.lBorderWidth;
+              var borderRightLeft: number = this.xrCoordinate - this.rBorderWidth;
+              var borderRightRight: number = this.xrCoordinate;
+      
+      */
         var imgData = new imageData();
         imgData.setSize(this.width, this.height);
         for (var xPosition = 0; xPosition < this.width; xPosition++) {
@@ -138,13 +139,13 @@ var Box = /** @class */ (function () {
                 if (xPosition < this.lBorderWidth) {
                     imgData.setPixel(this.lBorderColor, xPosition, yPosition);
                 }
-                else if (xPosition > this.width - this.rBorderWidth) {
+                else if (xPosition >= (this.width - this.rBorderWidth)) {
                     imgData.setPixel(this.rBorderColor, xPosition, yPosition);
                 }
                 else if (yPosition < this.tBorderWidth) {
                     imgData.setPixel(this.tBorderColor, xPosition, yPosition);
                 }
-                else if (yPosition > this.height - this.bBorderWidth) {
+                else if (yPosition >= (this.height - this.bBorderWidth)) {
                     imgData.setPixel(this.bBorderColor, xPosition, yPosition);
                 }
                 else {
@@ -185,4 +186,3 @@ var Box = /** @class */ (function () {
     };
     return Box;
 }());
-//# sourceMappingURL=animation.js.map
