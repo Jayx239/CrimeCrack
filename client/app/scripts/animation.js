@@ -1,3 +1,4 @@
+"use strict";
 var pixel = /** @class */ (function () {
     function pixel() {
         this.red = 0;
@@ -41,7 +42,7 @@ var imageData = /** @class */ (function () {
     };
     imageData.prototype.data = function () {
         var data = [];
-        for (var i = 0; i < this.content.length; i++) {
+        for (var i = 0; i < this.width * this.height; i++) {
             var value = new pixel();
             if (this.content[i] !== null && typeof (this.content[i]) !== 'undefined') {
                 value = this.content[i];
@@ -115,23 +116,18 @@ var Box = /** @class */ (function () {
             this.height = y2 - y1;
         }
     };
+    /*for(var xPosition = this.xlCoordinate; xPosition < this.xrCoordinate; xPosition++) {
+        for(var yPosition = this.ytCoordinate; yPosition < this.ybCoordinate; yPosition++) {*/
+    /* TODO: Figure out what to do with corners, options (currently using 1):
+    (1)  ttttttttt  (2) lllltttttt  (3) ttttttttttttt
+         ttttttttt      lllltttttt      llttttttttttt
+         ttttttttt      lllltttttt      llltttttttttt
+         llll           llll            llll
+         llll           llll            llll
+         llll           llll            llll
+
+     */
     Box.prototype.generateCanvasBox = function () {
-        /*var boxWidth: number = Math.abs(this.xlCoordinate - this.xrCoordinate);
-        var boxHeight: number = Math.abs(this.ytCoordinate-this.ybCoordinate);
-*/
-        /* x axis borders */
-        /*      var borderTopTop: number = this.ytCoordinate;
-              var borderTopBottom: number = this.ytCoordinate + this.tBorderWidth;
-              var borderBottomTop: number = this.ybCoordinate - this.bBorderWidth;
-              var borderBottomBottom: number = this.ybCoordinate;
-      */
-        /* y axis borders */
-        /*      var borderLeftLeft: number = this.xlCoordinate;
-              var borderLeftRight: number = this.xlCoordinate + this.lBorderWidth;
-              var borderRightLeft: number = this.xrCoordinate - this.rBorderWidth;
-              var borderRightRight: number = this.xrCoordinate;
-      
-      */
         var imgData = new imageData();
         imgData.setSize(this.width, this.height);
         for (var xPosition = 0; xPosition < this.width; xPosition++) {
@@ -153,36 +149,8 @@ var Box = /** @class */ (function () {
                 }
             }
         }
-        /*for(var xPosition = this.xlCoordinate; xPosition < this.xrCoordinate; xPosition++) {
-            for(var yPosition = this.ytCoordinate; yPosition < this.ybCoordinate; yPosition++) {*/
-        /* TODO: Figure out what to do with corners, options (currently using 1):
-        (1)  ttttttttt  (2) lllltttttt  (3) ttttttttttttt
-             ttttttttt      lllltttttt      llttttttttttt
-             ttttttttt      lllltttttt      llltttttttttt
-             llll           llll            llll
-             llll           llll            llll
-             llll           llll            llll
-
-         */
-        /*
-                        if (xPosition >= borderLeftLeft && xPosition < borderLeftRight) {
-                            imgData.setPixel(this.lBorderColor, xPosition, yPosition);
-                        }
-                        else if (xPosition <= borderRightRight && xPosition > borderRightLeft) {
-                            imgData.setPixel(this.rBorderColor, xPosition, yPosition);
-                        }
-                        else if (yPosition >= borderTopTop && yPosition < borderTopBottom) {
-                            imgData.setPixel(this.rBorderColor, xPosition, yPosition);
-                        }
-                        else if (yPosition >= borderBottomTop && yPosition < borderBottomBottom) {
-                            imgData.setPixel(this.bBorderColor, xPosition, yPosition);
-                        }
-                        else {
-                            imgData.setPixel(null, xPosition, yPosition);
-                        }
-                    }
-                }*/
         return imgData;
     };
     return Box;
 }());
+//# sourceMappingURL=animation.js.map

@@ -45,7 +45,6 @@ class imageData {
         this.content = [new pixel()];
         this.width = width;
         this.height = height;
-
         for(var i = 0; i < width*height; i++) {
             this.content[i] = new pixel();
         }
@@ -57,7 +56,7 @@ class imageData {
 
     public data() {
         var data = [];
-        for(var i=0; i<this.content.length; i++) {
+        for(var i=0; i<this.width*this.height; i++) {
             var value: pixel = new pixel();
             if(this.content[i] !== null && typeof (this.content[i]) !== 'undefined') {
                  value = <pixel> this.content[i];
@@ -68,9 +67,7 @@ class imageData {
             data[(i*4) + 1] = rgbValues[1];
             data[(i*4) + 2] = rgbValues[2];
             data[(i*4) + 3] = rgbValues[3];
-
         }
-
         return data;
     }
 
@@ -161,23 +158,22 @@ class Box {
         }
     }
 
-    public generateCanvasBox() {
-        /*var boxWidth: number = Math.abs(this.xlCoordinate - this.xrCoordinate);
-        var boxHeight: number = Math.abs(this.ytCoordinate-this.ybCoordinate);
-*/
-        /* x axis borders */
-  /*      var borderTopTop: number = this.ytCoordinate;
-        var borderTopBottom: number = this.ytCoordinate + this.tBorderWidth;
-        var borderBottomTop: number = this.ybCoordinate - this.bBorderWidth;
-        var borderBottomBottom: number = this.ybCoordinate;
-*/
-        /* y axis borders */
-  /*      var borderLeftLeft: number = this.xlCoordinate;
-        var borderLeftRight: number = this.xlCoordinate + this.lBorderWidth;
-        var borderRightLeft: number = this.xrCoordinate - this.rBorderWidth;
-        var borderRightRight: number = this.xrCoordinate;
 
-*/
+
+    /*for(var xPosition = this.xlCoordinate; xPosition < this.xrCoordinate; xPosition++) {
+        for(var yPosition = this.ytCoordinate; yPosition < this.ybCoordinate; yPosition++) {*/
+    /* TODO: Figure out what to do with corners, options (currently using 1):
+    (1)  ttttttttt  (2) lllltttttt  (3) ttttttttttttt
+         ttttttttt      lllltttttt      llttttttttttt
+         ttttttttt      lllltttttt      llltttttttttt
+         llll           llll            llll
+         llll           llll            llll
+         llll           llll            llll
+
+     */
+
+    public generateCanvasBox() {
+
         var imgData: imageData = new imageData();
         imgData.setSize(this.width,this.height);
 
@@ -200,35 +196,6 @@ class Box {
                 }
             }
         }
-                /*for(var xPosition = this.xlCoordinate; xPosition < this.xrCoordinate; xPosition++) {
-                    for(var yPosition = this.ytCoordinate; yPosition < this.ybCoordinate; yPosition++) {*/
-                /* TODO: Figure out what to do with corners, options (currently using 1):
-                (1)  ttttttttt  (2) lllltttttt  (3) ttttttttttttt
-                     ttttttttt      lllltttttt      llttttttttttt
-                     ttttttttt      lllltttttt      llltttttttttt
-                     llll           llll            llll
-                     llll           llll            llll
-                     llll           llll            llll
-
-                 */
-/*
-                if (xPosition >= borderLeftLeft && xPosition < borderLeftRight) {
-                    imgData.setPixel(this.lBorderColor, xPosition, yPosition);
-                }
-                else if (xPosition <= borderRightRight && xPosition > borderRightLeft) {
-                    imgData.setPixel(this.rBorderColor, xPosition, yPosition);
-                }
-                else if (yPosition >= borderTopTop && yPosition < borderTopBottom) {
-                    imgData.setPixel(this.rBorderColor, xPosition, yPosition);
-                }
-                else if (yPosition >= borderBottomTop && yPosition < borderBottomBottom) {
-                    imgData.setPixel(this.bBorderColor, xPosition, yPosition);
-                }
-                else {
-                    imgData.setPixel(null, xPosition, yPosition);
-                }
-            }
-        }*/
 
         return imgData;
     }

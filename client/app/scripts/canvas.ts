@@ -7,7 +7,9 @@ class BaseCanvasManager {
 
     public constructor(canvasId: string, width: number, height: number) {
         this.canvas = <HTMLCanvasElement> document.getElementById(canvasId);
-        this.ctx = <CanvasRenderingContext2D> this.canvas.getContext('2d');
+        this.canvas.height = height;
+        this.canvas.width = width;
+        this.ctx = <CanvasRenderingContext2D> this.canvas.getContext("2d", {alpha: true});
         this.width = width;
         this.height = height;
     }
@@ -23,42 +25,41 @@ class BaseCanvasManager {
     }
 
     public setCanvasString(bitMap: string, width: number, height: number, offsetX: number, offsetY: number) {
+        if(!this.validDimensions(width,height))
+            return;
         var size = width*height;
-        var imgData: Uint8ClampedArray = new Uint8ClampedArray(size);
-        for(var i=0; i<size; i+=4) {
-            imgData[i] = bitMap.charCodeAt(i); /* r */
-            imgData[i+1] = bitMap.charCodeAt(i+1); /* g */
-            imgData[i+2] = bitMap.charCodeAt(i+2); /* b */
-            imgData[i+3] = bitMap.charCodeAt(i+3); /* a */
+        var imgData: Uint8ClampedArray = new Uint8ClampedArray(size*4);
+        for(var i=0; i<size; i++) {
+            imgData[i] = bitMap.charCodeAt(i);
         }
         this.ctx.putImageData(new ImageData(imgData,width,height), offsetX, offsetY);
     }
 
     public setCanvasNumber(bitMap: [number], width: number, height: number, offsetX: number, offsetY: number) {
+        if(!this.validDimensions(width,height))
+            return;
         var size = width*height;
         var imgData: Uint8ClampedArray = new Uint8ClampedArray(size*4);
-        for(var i=0; i<size; i+=4) {
-            imgData[i] = bitMap[i]; /* r */
-            imgData[i+1] = bitMap[i+1]; /* g */
-            imgData[i+2] = bitMap[i+2]; /* b */
-            imgData[i+3] = bitMap[i+3]; /* a */
+        for(var i=0; i<size; i++) {
+            imgData[i] = bitMap[i];
         }
         this.ctx.putImageData(new ImageData(imgData,width,height), offsetX, offsetY);
     }
     public setCanvasNumberArray(bitMap: Array<number>, width: number, height: number, offsetX: number, offsetY: number) {
-        var size = width*height*4;
-        var imgData: Uint8ClampedArray = new Uint8ClampedArray(size);
-        for(var i=0; i<size; i+=4) {
-            imgData[i] = bitMap[i]; /* r */
-            imgData[i+1] = bitMap[i+1]; /* g */
-            imgData[i+2] = bitMap[i+2]; /* b */
-            imgData[i+3] = bitMap[i+3]; /* a */
+        if(!this.validDimensions(width,height))
+            return;
+        var size = width*height;
+        var imgData: Uint8ClampedArray = new Uint8ClampedArray(size*4);
+        for(var i=0; i<size*4; i++) {
+            imgData[i] = bitMap[i];
         }
-        console.log(imgData);
-        console.log("offsetx: " + offsetX + " offsety: " + offsetY);
+
         this.ctx.putImageData(new ImageData(imgData,width,height), offsetX, offsetY);
     }
 
+    private validDimensions(width: number, height: number): boolean {
+        return width > 0 && height > 0;
+    }
 
     public drawBox(box: Box) {
         this.setCanvasNumberArray(box.generateCanvasBox().data(), box.width, box.height, box.xlCoordinate, box.ytCoordinate);
@@ -72,7 +73,6 @@ class BaseCanvasManager {
             left = 0;
         if(typeof(top) === 'undefined' || top === null)
             top = 0;
-        console.log("width: " + imageData.width + " height: " + imageData.height);
         this.setCanvasNumberArray(imageData.data(), imageData.width, imageData.height, left, top);
     }
 
